@@ -4,37 +4,26 @@ import PackageDescription
 let package = Package(
     name: "TrustKit",
     platforms: [
-        .iOS(.v12),
-        .macOS(.v10_13),
-        .tvOS(.v12),
-        .watchOS(.v4)
+        .iOS(.v12), // Minimum supported iOS version
+        .macOS(.v10_15)
     ],
     products: [
         .library(
             name: "TrustKit",
             targets: ["TrustKit"]
-        ),
-        .library(
-            name: "TrustKitDynamic",
-            type: .dynamic,
-            targets: ["TrustKit"]
-        ),
-        .library(
-            name: "TrustKitStatic",
-            type: .static,
-            targets: ["TrustKit"]
-        ),
-    ],
-    dependencies: [
+        )
     ],
     targets: [
         .target(
             name: "TrustKit",
-            dependencies: [],
-            path: "TrustKit",   
-            resources: [.copy("PrivacyInfo.xcprivacy")],
-            publicHeadersPath: "public",
-            cSettings: [.define("NS_BLOCK_ASSERTIONS", to: "1", .when(configuration: .release))]
-        ),
-    ]
+            path: "TrustKit", // Points to the TrustKit source folder
+            exclude: ["Tests", "Examples"], // Exclude test and example files
+            publicHeadersPath: ".",
+            cSettings: [
+                .headerSearchPath("."),
+                .define("TRUSTKIT", to: "1")
+            ]
+        )
+    ],
+    swiftLanguageVersions: [.v5]
 )
